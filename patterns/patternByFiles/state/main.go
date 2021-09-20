@@ -1,3 +1,5 @@
+package main
+
 /*
 Паттерн «Состояние», является поведенческим паттерном,
 т.е. решает задачи эффективного и безопасного взаимодействия между объектами программы.
@@ -21,79 +23,32 @@
 1) Код усложняется.
 */
 
-package main
-
 import (
-	"fmt"
+	context "state/context"
+	"state/state"
 )
 
-type carState interface {
-	action()
+func main() {
+	csm := context.CarMovingContext{}
+
+	carD := state.DriveState{}
+	carS := state.StopState{}
+	carR := state.ReverseState{}
+	tLeft := state.TurnLeftState{}
+	tRight := state.TurnRightState{}
+
+	csm.SetState(carD)
+	csm.Action()
+
+	csm.SetState(carS)
+	csm.Action()
+
+	csm.SetState(carR)
+	csm.Action()
+
+	csm.SetState(tLeft)
+	csm.Action()
+
+	csm.SetState(tRight)
+	csm.Action()
 }
-
-type driveState struct{}
-
-func (ds driveState) action() {
-	fmt.Println("Drive ahead")
-}
-
-type stopState struct{}
-
-func (sts stopState) action() {
-	fmt.Println("Stop")
-}
-
-type reverseState struct{}
-
-func (rs reverseState) action() {
-	fmt.Println("Drive reverse")
-}
-
-type turnLeftState struct{}
-
-func (tls turnLeftState) action() {
-	fmt.Println("Turn left")
-}
-
-type turnRightState struct{}
-
-func (trs turnRightState) action() {
-	fmt.Println("Turn right")
-}
-
-type carMovingContext struct {
-	cs carState
-}
-
-func (cmc *carMovingContext) setState(cs carState) {
-	cmc.cs = cs
-}
-
-func (cmc carMovingContext) action() {
-	cmc.cs.action()
-}
-
-/*func main() {
-	csm := carMovingContext{}
-
-	carD := driveState{}
-	carS := stopState{}
-	carR := reverseState{}
-	tLeft := turnLeftState{}
-	tRight := turnRightState{}
-
-	csm.setState(carD)
-	csm.action()
-
-	csm.setState(carS)
-	csm.action()
-
-	csm.setState(carR)
-	csm.action()
-
-	csm.setState(tLeft)
-	csm.action()
-
-	csm.setState(tRight)
-	csm.action()
-}*/
